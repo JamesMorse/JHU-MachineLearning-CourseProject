@@ -7,7 +7,7 @@ The objective is to use activity tracking device data to correctly recognize
 different types of physical activities. For this project, we will use supervised
 machine learning to classify observed movements as are either correctly 
 performed barbell lifts or one of five incorrect barbell lift techniques. 
-Training and test data was sourced from [Groupware@LES](http://groupware.les.inf.puc-rio.br/har).  
+Training and test data was sourced from [Groupware\@LES](http://groupware.les.inf.puc-rio.br/har).  
 
 ### Data Preparation
 First, we load the training data file and pare down the data set to the 
@@ -214,7 +214,40 @@ set as a secondary test of their performances on new data.
 ```r
 # predict classes on validation set for each model
 validation.preds.rf <- predict(fit.rf, validation.data)
+```
+
+```
+## Loading required package: randomForest
+## randomForest 4.6-10
+## Type rfNews() to see new features/changes/bug fixes.
+## 
+## Attaching package: 'randomForest'
+## 
+## The following object is masked from 'package:dplyr':
+## 
+##     combine
+```
+
+```r
 validation.preds.gbm <- predict(fit.gbm, validation.data)
+```
+
+```
+## Loading required package: gbm
+## Loading required package: survival
+## Loading required package: splines
+## 
+## Attaching package: 'survival'
+## 
+## The following object is masked from 'package:caret':
+## 
+##     cluster
+## 
+## Loading required package: parallel
+## Loaded gbm 2.1
+```
+
+```r
 # tabulate misclassifications & error rates for each model
 validation.misclass.count.rf <- sum(validation.preds.rf != validation.data.response)
 validation.misclass.count.gbm <- sum(validation.preds.gbm != validation.data.response)
@@ -304,7 +337,7 @@ an ensemble prediction of the two models.
 pml_write_files = function(x){
   n = length(x)
   for(i in 1:n){
-    filename = paste0("problem_id_",i,".txt")
+    filename = paste0("submission/problem_id_",i,".txt")
     write.table(x[i],file=filename,quote=FALSE,row.names=FALSE,col.names=FALSE)
   }
 }

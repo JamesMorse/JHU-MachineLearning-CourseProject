@@ -15,7 +15,7 @@ The objective is to use activity tracking device data to correctly recognize
 different types of physical activities. For this project, we will use supervised
 machine learning to classify observed movements as are either correctly 
 performed barbell lifts or one of five incorrect barbell lift techniques. 
-Training and test data was sourced from [Groupware@LES](http://groupware.les.inf.puc-rio.br/har).  
+Training and test data was sourced from [Groupware\@LES](http://groupware.les.inf.puc-rio.br/har).  
 
 ### Data Preparation
 First, we load the training data file and pare down the data set to the 
@@ -159,7 +159,8 @@ registerDoMC(cores = 1)
 **Model Tuning Plots**  
 ```{r, echo=FALSE}
 ggplot(fit.rf) + ggtitle("Random Forest Model Tuning") + theme_bw()
-ggplot(fit.gbm) + ggtitle("GBM Model Tuning") + theme_bw()
+ggplot(fit.gbm) + ggtitle("GBM Model Tuning") + theme_bw() +
+     theme(legend.position = 'bottom')
 ```
 
 **Best Models' Tuning Parameters**  
