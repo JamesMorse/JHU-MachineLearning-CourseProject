@@ -86,27 +86,9 @@ img {
 <h3>Data Preparation</h3>
 <p>First, we load the training data file and pare down the data set to the response variable and relevant predictors. About two-thirds of the measure columns are not usable due to a majority of values being missing, so we drop them.</p>
 <pre class="r"><code>library(data.table)
-library(plyr);library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: 'dplyr'
-## 
-## The following objects are masked from 'package:plyr':
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize
-## 
-## The following objects are masked from 'package:data.table':
-## 
-##     between, last
-## 
-## The following object is masked from 'package:stats':
-## 
-##     filter
-## 
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code># load training data file, looking for 3 different types of missing values
+library(plyr);library(dplyr)
+
+# load training data file, looking for 3 different types of missing values
 train.data &lt;- fread(&quot;data/pml-training.csv&quot;, stringsAsFactors=FALSE, na.strings=c(&quot;NA&quot;,&quot;#DIV/0!&quot;,&quot;&quot;))
 
 # tidy up data for model building
@@ -136,10 +118,9 @@ train.data &lt;- train.data %&gt;%
 <li>The <strong>build</strong> subset (75%) will be used to train models using cross-validation.<br /></li>
 <li>The held-out <strong>validation</strong> set (25%) will be used to compare estimated out-of-sample error rates between the selected model versions from each algorithm that we use.</li>
 </ul>
-<pre class="r"><code>library(caret)</code></pre>
-<pre><code>## Loading required package: lattice
-## Loading required package: ggplot2</code></pre>
-<pre class="r"><code>set.seed(245613579)
+<pre class="r"><code>library(caret)
+
+set.seed(245613579)
 # 75% for training and 25% for validation 
 build.index &lt;- as.vector(createDataPartition(train.data$classe, p=0.75, list=FALSE))
 build.data &lt;- train.data[build.index]
@@ -244,30 +225,9 @@ registerDoMC(cores = 1)</code></pre>
 <h3>Hold-Out Validation Set Performance</h3>
 <p>Now, we apply the best-tuned Random Forest and GBM models our held-out validation set as a secondary test of their performances on new data.</p>
 <pre class="r"><code># predict classes on validation set for each model
-validation.preds.rf &lt;- predict(fit.rf, validation.data)</code></pre>
-<pre><code>## Loading required package: randomForest
-## randomForest 4.6-10
-## Type rfNews() to see new features/changes/bug fixes.
-## 
-## Attaching package: 'randomForest'
-## 
-## The following object is masked from 'package:dplyr':
-## 
-##     combine</code></pre>
-<pre class="r"><code>validation.preds.gbm &lt;- predict(fit.gbm, validation.data)</code></pre>
-<pre><code>## Loading required package: gbm
-## Loading required package: survival
-## Loading required package: splines
-## 
-## Attaching package: 'survival'
-## 
-## The following object is masked from 'package:caret':
-## 
-##     cluster
-## 
-## Loading required package: parallel
-## Loaded gbm 2.1</code></pre>
-<pre class="r"><code># tabulate misclassifications &amp; error rates for each model
+validation.preds.rf &lt;- predict(fit.rf, validation.data)
+validation.preds.gbm &lt;- predict(fit.gbm, validation.data)
+# tabulate misclassifications &amp; error rates for each model
 validation.misclass.count.rf &lt;- sum(validation.preds.rf != validation.data.response)
 validation.misclass.count.gbm &lt;- sum(validation.preds.gbm != validation.data.response)
 validation.rows &lt;- nrow(validation.data)

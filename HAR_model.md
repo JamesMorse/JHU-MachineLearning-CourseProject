@@ -17,31 +17,7 @@ columns are not usable due to a majority of values being missing, so we drop the
 ```r
 library(data.table)
 library(plyr);library(dplyr)
-```
 
-```
-## 
-## Attaching package: 'dplyr'
-## 
-## The following objects are masked from 'package:plyr':
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize
-## 
-## The following objects are masked from 'package:data.table':
-## 
-##     between, last
-## 
-## The following object is masked from 'package:stats':
-## 
-##     filter
-## 
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
 # load training data file, looking for 3 different types of missing values
 train.data <- fread("data/pml-training.csv", stringsAsFactors=FALSE, na.strings=c("NA","#DIV/0!",""))
 
@@ -78,14 +54,7 @@ error rates between the selected model versions from each algorithm that we use.
 
 ```r
 library(caret)
-```
 
-```
-## Loading required package: lattice
-## Loading required package: ggplot2
-```
-
-```r
 set.seed(245613579)
 # 75% for training and 25% for validation 
 build.index <- as.vector(createDataPartition(train.data$classe, p=0.75, list=FALSE))
@@ -214,40 +183,7 @@ set as a secondary test of their performances on new data.
 ```r
 # predict classes on validation set for each model
 validation.preds.rf <- predict(fit.rf, validation.data)
-```
-
-```
-## Loading required package: randomForest
-## randomForest 4.6-10
-## Type rfNews() to see new features/changes/bug fixes.
-## 
-## Attaching package: 'randomForest'
-## 
-## The following object is masked from 'package:dplyr':
-## 
-##     combine
-```
-
-```r
 validation.preds.gbm <- predict(fit.gbm, validation.data)
-```
-
-```
-## Loading required package: gbm
-## Loading required package: survival
-## Loading required package: splines
-## 
-## Attaching package: 'survival'
-## 
-## The following object is masked from 'package:caret':
-## 
-##     cluster
-## 
-## Loading required package: parallel
-## Loaded gbm 2.1
-```
-
-```r
 # tabulate misclassifications & error rates for each model
 validation.misclass.count.rf <- sum(validation.preds.rf != validation.data.response)
 validation.misclass.count.gbm <- sum(validation.preds.gbm != validation.data.response)

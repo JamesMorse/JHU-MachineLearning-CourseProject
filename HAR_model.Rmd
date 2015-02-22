@@ -21,7 +21,7 @@ Training and test data was sourced from [Groupware\@LES](http://groupware.les.in
 First, we load the training data file and pare down the data set to the 
 response variable and relevant predictors. About two-thirds of the measure 
 columns are not usable due to a majority of values being missing, so we drop them.  
-```{r, results='hide', warning=FALSE}
+```{r, results='hide', message=FALSE, warning=FALSE}
 library(data.table)
 library(plyr);library(dplyr)
 
@@ -58,7 +58,7 @@ Next, we split out the data used in the model building into "build" and
 * The __build__ subset (75%) will be used to train models using cross-validation.  
 * The held-out __validation__ set (25%) will be used to compare estimated out-of-sample 
 error rates between the selected model versions from each algorithm that we use.  
-```{r, results='hide'}
+```{r, message=FALSE, results='hide'}
 library(caret)
 
 set.seed(245613579)
@@ -171,7 +171,7 @@ ggplot(fit.gbm) + ggtitle("GBM Model Tuning") + theme_bw() +
 ### Hold-Out Validation Set Performance  
 Now, we apply the best-tuned Random Forest and GBM models our held-out validation
 set as a secondary test of their performances on new data.  
-```{r, warning=FALSE, results='hide'}
+```{r, message=FALSE, warning=FALSE, results='hide'}
 # predict classes on validation set for each model
 validation.preds.rf <- predict(fit.rf, validation.data)
 validation.preds.gbm <- predict(fit.gbm, validation.data)
